@@ -1,4 +1,4 @@
-
+# all folder named data and all files and folders within it are ignored
 **/data
 
 *.csv
