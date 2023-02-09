@@ -11,7 +11,7 @@ from torch.utils.data import DataLoader
 import numpy as np
 import matplotlib.pyplot as plt
 import copy
-
+from tqdm import tqdm
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 ## 1. prepare data
@@ -70,12 +70,16 @@ show_image(grid, [class_names[x] for x in labels])
 
 ## 2. define training loop
 
-def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
+def train_model(model, criterion, optim, scheduler, num_epochs=25, patience=3):
 
-    phases = ["train", "test"]
+    phases = ["train", "val"]
     best_loss = float('inf')
+    best_model_weights = copy.deepcopy(model.state_dict())
+    since = time()
+    stop_training = False
 
-    for epoch in range(num_epochs):
+    for epoch in tqdm(range(num_epochs)):
+        
 
         # Each epoch has a training and validation phase
         for phase in phases:
@@ -86,8 +90,7 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
 
             running_loss = 0
             running_correct = 0
-            if phase=='train': 
-                scheduler.step()
+
             # Iterate over data.
             for i, batch in enumerate(img_loaders[phase]):
                 inputs, labels = batch
@@ -101,27 +104,41 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
                 
                 # backward + optimize only if in training phase
                     if(phase=='train'):
-                        optimizer.zero_grad()
                         loss.backward()
-                        print("here")
-                        optimizer.step()
-                        print("here")
+                        optim.step()
+                        optim.zero_grad()
 
-                running_loss += loss.item()*inputs.size[0]
+                running_loss += loss.item()*(inputs.shape[0])
                 running_correct += y_pred.eq(labels).sum().item()
 
             # step scheduler after epochs
-
+            if phase=='train': 
+                scheduler.step()
 
             epoch_loss = running_loss/datasize[phase]
             epoch_acc = running_correct/datasize[phase]
 
-            print(f'epoch {epoch}, phase {phase}, loss {epoch_loss:.3f}, acc {epoch_acc:.3f}')
+            print(f'epoch {epoch+1}, phase {phase}, loss {epoch_loss:.3f}, acc {epoch_acc:.3f}')
 
             # update best_loss and save best model weights
             if phase=='val' and epoch_loss<best_loss:
                 best_loss=epoch_loss
                 best_model_weights = copy.deepcopy(model.state_dict())
+                print(f"Best weights updated. best loss {best_loss:.3f} in epoch {epoch+1}")
+            elif phase=='val':
+                patience -= 1
+                if patience==0:
+                    print('ran out of paitence!!. stopping training as eval loss is not improving.')
+                    stop_training = True
+
+        if stop_training==True: break
+
+        print()
+
+    time_elapsed = time() - since
+    print('Training complete in {:.0f}m {:.0f}s'.format(
+    time_elapsed // 60, time_elapsed % 60))
+    print('Best val loss: {:3f}'.format(best_loss))
 
     # load best model
     model.load_state_dict(best_model_weights)
@@ -131,19 +148,52 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
 ## 3.a Finetune the model by training all model weights after
 
 # load model
-model = torchvision.models.resnet18(pretrained=True)
+model = torchvision.models.resnet18(weights=torchvision.models.ResNet18_Weights.DEFAULT)
 
 # change classification head
 last_layer_input_features = model.fc.in_features
+# Here the size of each output sample is set to 2.
+# Alternatively, it can be generalized to nn.Linear(num_ftrs, len(class_names)).
 model.fc = nn.Linear(last_layer_input_features, 2)
 model.to(device)
 
 # define loss, optim, sched ..
 lr = 0.01
 criterion = nn.CrossEntropyLoss()
-# all parameters are passed to optimizer to update weights
+
+# all parameters are being optiized
 optimizer = torch.optim.Adam(model.parameters(), lr=lr)
+
+# StepLR Decays the learning rate of each parameter group by gamma every step_size epochs
+# Decay LR by a factor of 0.1 every 7 epochs
+# Learning rate scheduling should be applied after optimizer’s update
+# e.g., you should write your code this way:
+# for epoch in range(100):
+#     train(...)
+#     validate(...)
+#     scheduler.step()
 scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.7)
 num_epochs = 10
 
-train_model(model, criterion, optimizer, scheduler, num_epochs)
+finetuned_allweights = train_model(model, criterion, optimizer, scheduler, num_epochs)
+
+
+
+## 3.b Finetune only the last layer of the model. ie use Resnet as fixed feature extractor
+
+model = torchvision.models.resnet18(weights=torchvision.models.ResNet18_Weights.DEFAULT)
+for param in model.parameters():
+    param.requires_grad = False
+
+last_layer_in_features = model.fc.in_features
+model.fc = nn.Linear(last_layer_in_features, 2)
+model.to(device)
+
+lr = 0.01
+criterion = nn.CrossEntropyLoss()
+optimizer = torch.optim.Adam(model.fc.parameters(), lr =lr)
+scheduler = torch.optim.lr_scheduler.StepLR(optimizer=optimizer, step_size=3, gamma=0.7)
+num_epochs = 10
+
+
+top_layer_finetuned = train_model(model, criterion, optimizer, scheduler, num_epochs)
