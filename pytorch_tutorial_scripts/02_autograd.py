@@ -46,12 +46,14 @@ print(z.grad)           # None
 print(y.grad)           # None
 print(x.grad)           # some value
 
-# to detach from comp graph/remove gradients from tensor-
+# DISABLE GRADIENTS / to detach from comp graph -
 x.requires_grad_(False)         # trailing_ mans inplace
 x.detach()
 with torch.no_grad():
     'something with x'
     print(x)
+
+# note: model.eval only works for layers, ie it will disable dropout and batchnorm layers. NOTHING to do with gradients. 
 
 
 

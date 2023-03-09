@@ -6,6 +6,8 @@ import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
 from tqdm import tqdm
+import numpy as np
+import os
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
@@ -14,13 +16,20 @@ input_size = 28*28
 hidden_size = 100
 num_classes = 10
 
+mean = np.array([0.5, 0.5, 0.5])
+std = np.array([0.25, 0.25, 0.25])
+transform = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize(mean=(0.1307,), std=(0.3801),)
+])
 
 # load data
-train_dataset = torchvision.datasets.MNIST(root='./tutorial/data/', train=True,
-                transform=transforms.ToTensor(), download=True)
+base_dir = './'
+train_dataset = torchvision.datasets.MNIST(root=os.path.join(base_dir,'data'), train=True,
+                transform=transform, download=True)
 
-test_dataset = torchvision.datasets.MNIST(root='./tutorial/data/', train=False,
-                transform=transforms.ToTensor(), download=False)
+test_dataset = torchvision.datasets.MNIST(root=os.path.join(base_dir,'data'), train=False,
+                transform=transform, download=False)
 
 trainloader = DataLoader(dataset=train_dataset, shuffle=True, batch_size=batch_size)
 testloader = DataLoader(dataset=test_dataset, shuffle=True, batch_size=batch_size)
@@ -56,7 +65,7 @@ model.to(device)
 
 # define loss & optim
 lr = 0.001
-n_iter=10
+n_iter=5
 criterion = nn.CrossEntropyLoss()                # output=logits and y_true=labels/probabilties
 optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 total_steps = len(trainloader)
@@ -117,3 +126,5 @@ for epoch in range(n_iter):
             print("test performance getting worse!! stopping training now!!!!")
             break
         
+
+torch.save(model.state_dict(), os.path.join(base_dir, 'model_ffn_mnist.pth'))
