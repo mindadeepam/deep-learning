@@ -3,4 +3,4 @@
 **/runs
 *.csv
 **/flask_deploy
-**/.pth
+*.pth
