@@ -67,7 +67,6 @@ grid = torchvision.utils.make_grid(samples)
 show_image(grid, [class_names[x] for x in labels])
 
 
-
 ## 2. define training loop
 
 def train_model(model, criterion, optim, scheduler, num_epochs=25, patience=3):
