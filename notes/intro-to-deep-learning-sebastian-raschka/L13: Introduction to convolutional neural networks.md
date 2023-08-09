@@ -4,7 +4,7 @@
 
 - While feedforward networks assume independent features, and sequential networks assume sequential relationship, CNNs assume local feature relation.
 
-![image](deep-learning/notes/intro-to-deep-learning-sebastian-raschka/figs/cnn-basics.png)
+![image](figs/cnn-basics.png)
 
 
 ## Intuition on the Conv layer
