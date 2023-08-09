@@ -33,7 +33,8 @@ The CONV layer’s parameters consist of a set of learnable filters. Every filte
 
 ## All about the shapes
 
-If stride=1, pad=0, etc all are default values, $$ H_o = (H_i - K + 2P)/S + 1 $$ $$H_{o} = H_{i} - K + 1$$
+If stride=1, pad=0, etc all are default values, $$H_o = (H_i - K + 2P)/S + 1$$ 
+$$H_{o} = H_{i} - K + 1$$
 For the 1st hidden layer, size decreases from (32,32) to (28,28). hence kernel is (5,5). Since channels go from 1 to 6, num_of_filters/depth = 6.  
 - These filters are learnable parameters (There is one bias for each output channel. Each bias is added to every element in that output channel)
 $$W = [C_o, C_i,  K_h, K_w]$$
