@@ -4,6 +4,7 @@ resources, notes, etc all related to deep-learning.
 ## Awesome papers
 - [Clip paper](awesome-papers/clip.md)
 
+
 ## Courses
 
 ### Intro to deep learning - Sebastian rashcka  
