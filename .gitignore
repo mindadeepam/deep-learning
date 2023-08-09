@@ -4,3 +4,5 @@
 *.csv
 **/flask_deploy
 *.pth
+
+.DS_Store
