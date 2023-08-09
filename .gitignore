@@ -6,3 +6,4 @@
 *.pth
 
 .DS_Store
+artifacts/

@@ -116,7 +116,7 @@ Here are the course summary as its given on the course [link](https://www.course
   - Best:
     - Training error: 0.5%
     - Test error: 1%
-  - ![image description](figs/bias_variance.png)
+  - ![image description](https://drive.google.com/uc?export=view&id=1YwRPcKLe463dM7c5V35LE_oVVDOOkXDP)
   - These Assumptions came from that human has 0% error. If the problem isn't like that you'll need to use human error as baseline.
   - perfoermance on train data compaered to optimal(bayes) error shows us bias & generalization from train to test shows us variance.
 ### Basic Recipe for Machine Learning
