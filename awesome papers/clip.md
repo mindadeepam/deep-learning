@@ -23,7 +23,7 @@ Q. How to go from a model that predicts text to a zero-shot classifier?
 - They initially trained a CNN and text transformer from scratch to predict the caption of images. but this didnt scale and was less efficient than a baseline that predicts bag-of-words rather than the exact caption.  
 - Inspired by Recent work in contrastive representation learning for images they switched to predicting only which text as a whole is paired with which image and not the exact words of that text.  
 
-![clip-pretraining-approaches](../artifacts/clip/clip-pretraining-approaches.png)  
+![clip-pretraining-approaches](https://drive.google.com/file/d/1PHMnJzi9_oFZQl63jWXjd2quhdQUxiaV/view?usp=drive_link)  
 *CLIP is much more efficient at zero-shot transfer than our image caption baseline. Although highly expressive, transformer-based language models are relatively weak at zero-shot ImageNet classification. Here, we see that it learns 3x slower than a baseline which predicts a bag-of-words (BoW) encoding of the text (Joulin et al., 2016). Swapping the prediction objective for the contrastive objective of CLIP further improves efficiency another 4x.*  
 
 <br>
@@ -36,7 +36,7 @@ Contrastive Pre-training aims to jointly train an Image and a Text Encoder that 
     - In a contrastive fashion, the cosine similarities of dissimilar pairs <I1,T2>, <I1,T3>… <Ii,Tj> (where i≠j) are minimized.  
 
 
-![contrastive-learning](../artifacts/clip/contrastive-learning.png)  
+![contrastive-learning](https://drive.google.com/file/d/1U22s5Z6sOhOeYhQl5aB5rhTbiKNVxK4l/view?usp=drive_link)  
 *Minibatches must be of large size since for each minibatch, this $I*T$ matrix is created and in each the diagonal values are maximized and other values minimized. Hence only info from that batch serves as supervision.*
 
 <br>
