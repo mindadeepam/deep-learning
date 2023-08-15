@@ -39,7 +39,10 @@ For the 1st hidden layer, size decreases from (32,32) to (28,28). hence kernel i
 - These filters are learnable parameters (There is one bias for each output channel. Each bias is added to every element in that output channel)
 $$W = [C_o, C_i,  K_h, K_w]$$
 $$bias = [C_o]$$
-- **Pooling layers** are not learnable, they just downsampling operation along the spatial dimensions $(H, W)$ by avg/max/min pooling. There is information lost due to pooling.
+- **Pooling layers** 
+    - are not learnable, they just downsampling operation along the spatial dimensions $(H, W)$ by avg/max/min pooling. There is information lost due to pooling. 
+    - The use of pooling operation helps to extract a combination of features, which are invariant to translational shifts and small distortions. 
+    - Reduction in the size of feature-map to invariant feature set not only regulates the complexity of the network but also helps in increasing the generalization by reducing overfitting.
 
 Each Conv2d layer is defined by $[C_i, C_o,  K_h, K_w]$,  
 ie there are $C_{out}$ filters and each is of size - $$one\ kernel = [C_i, K_h, K_w]$$  

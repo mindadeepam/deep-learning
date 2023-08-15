@@ -2,7 +2,13 @@
 resources, notes, etc all related to deep-learning.
 
 ## Awesome papers
-- [Clip paper](awesome-papers/clip.md)
+- [Clip](awesome-papers/clip.md)
+- [Batchnorm](awesome-papers/batch-norm.md)
+- [Setfit](awesome-papers/setfit.md)
+
+## Awesome blogs/articles
+- [Blog](https://lilianweng.github.io/) by Lilian Weng. 
+
 
 
 ## Courses
