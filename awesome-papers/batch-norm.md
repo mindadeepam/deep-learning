@@ -10,7 +10,7 @@ at its time improved SOTA on Imagenet reaching 4.8% top5 test error.
 
 - Batch norm smoothens the loss landscape. we can have larger learning rates. graidents are smoother.
 
-[Here]((https://ketanhdoshi.github.io/Batch-Norm-Why/)) is an article that has useful visualizations and intuition. 
+[Here](https://ketanhdoshi.github.io/Batch-Norm-Why/) is an article that has useful visualizations and intuition. 
 <div style="display: flex;">
     <img src="https://drive.google.com/uc?export=view&id=1cCe-2OYeqCHGhautGuxjuNeFWD5lu2eo" alt="Image 1" width="50%" style="margin-right: 10px" />
     <img src="https://drive.google.com/uc?export=view&id=1C3Ms64FeLHk2e4iaHkDy-T5ahdva37Xd" alt="Image 2" width="50%" style="margin-left: 10px"/>
