@@ -17,7 +17,10 @@ PEFT methods include LoRA, Prefix-tuning, P-tuning, prompt tuning, AdaLoRA, $(IA
 
 <br>
 
-- another paradigm is "pattern exploiting training", ie to train using prompts (cloze questions) aka **PET and adaPET**. But in practise,  
+- another paradigm is "Pattern Exploiting Training", ie to train using prompts (cloze questions) aka **PET and adaPET**.   
+PET abstract -  
+`We introduce PatternExploiting Training (PET), a semi-supervised training procedure that reformulates input examples as cloze-style phrases to help language models understand a given task. These phrases are then used to assign soft labels to a large set of unlabeled examples. Finally, standard supervised training is performed on the resulting training set. For several tasks and languages, PET outperforms supervised training and strong semi-supervised approaches in lowresource settings by a large margin.`  
+    But in practise,  
     - requires hand-crafted "prompt templates" and "verbalizers"
     - slow to train (variable length verbalizers) and run inference (autoregressive decoding)  
 
@@ -51,19 +54,21 @@ others
 ## Appendix
 
 #### 1. Huggingface's zero-shot pipeline uses NLI models.   
-    NLI-based zero-shot classification pipeline using a `ModelForSequenceClassification` trained on NLI (natural
-    language inference) tasks. Equivalent of `text-classification` pipelines, but these models don't require a
-    hardcoded number of potential classes, they can be chosen at runtime. It usually means it's slower but it is
-    **much** more flexible.
 
-    Any combination of sequences and labels can be passed and each combination will be posed as a premise/hypothesis pair and passed to the pretrained model. Then, the logit for *entailment* is taken as the logit for the candidate label being valid. Any NLI model can be used, but the id of the *entailment* label must be included in the model config's :attr:*~transformers.PretrainedConfig.label2id*.
+NLI-based zero-shot classification pipeline using a `ModelForSequenceClassification` trained on NLI (natural
+language inference) tasks. Equivalent of `text-classification` pipelines, but these models don't require a
+hardcoded number of potential classes, they can be chosen at runtime. It usually means it's slower but it is
+**much** more flexible.
+
+Any combination of sequences and labels can be passed and each combination will be posed as a premise/hypothesis pair and passed to the pretrained model. Then, the logit for *entailment* is taken as the logit for the candidate label being valid. Any NLI model can be used, but the id of the *entailment* label must be included in the model config's :attr:*~transformers.PretrainedConfig.label2id*.
 
 <a id="peft-references"></a>
-#### 2. PEFT methods:  
-    - LoRA: [LORA: LOW-RANK ADAPTATION OF LARGE LANGUAGE MODELS](https://arxiv.org/abs/2106.09685)
-    - Prefix Tuning: [Prefix-Tuning: Optimizing Continuous Prompts for Generation](https://aclanthology.org/2021.acl-long.353/), [P-Tuning v2: Prompt Tuning Can Be Comparable to Fine-tuning Universally Across Scales and Tasks](https://arxiv.org/pdf/2110.07602.pdf)
-    - P-Tuning: [GPT Understands, Too](https://arxiv.org/abs/2103.10385)
-    - Prompt Tuning: [The Power of Scale for Parameter-Efficient Prompt Tuning](https://arxiv.org/abs/2104.08691)
-    - AdaLoRA: [Adaptive Budget Allocation for Parameter-Efficient Fine-Tuning](https://arxiv.org/abs/2303.10512)  
-    - $(IA)^3$ aka T-few : [Infused Adapter by Inhibiting and Amplifying Inner Activations ](https://arxiv.org/abs/2205.05638)
+#### 2. PEFT methods:   
+
+- LoRA: [LORA: LOW-RANK ADAPTATION OF LARGE LANGUAGE MODELS](https://arxiv.org/abs/2106.09685)
+- Prefix Tuning: [Prefix-Tuning: Optimizing Continuous Prompts for Generation](https://aclanthology.org/2021.acl-long.353/), [P-Tuning v2: Prompt Tuning Can Be Comparable to Fine-tuning Universally Across Scales and Tasks](https://arxiv.org/pdf/2110.07602.pdf)
+- P-Tuning: [GPT Understands, Too](https://arxiv.org/abs/2103.10385)
+- Prompt Tuning: [The Power of Scale for Parameter-Efficient Prompt Tuning](https://arxiv.org/abs/2104.08691)
+- AdaLoRA: [Adaptive Budget Allocation for Parameter-Efficient Fine-Tuning](https://arxiv.org/abs/2303.10512)  
+- $(IA)^3$ aka T-few : [Infused Adapter by Inhibiting and Amplifying Inner Activations ](https://arxiv.org/abs/2205.05638)
 
