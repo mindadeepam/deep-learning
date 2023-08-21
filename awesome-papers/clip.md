@@ -133,7 +133,7 @@ concepts that the classes represent
 
 ## new terms
 
-- linear probing: keeping the bacbone fixed and training a small classifier head on top. (opposed to finetuning where backbone weights are also finetuned)
+- linear probing: keeping the backbone fixed and training a small classifier head on top. (opposed to finetuning where backbone weights are also finetuned). For linear probing, the authors used only the CLIP’s Image Encoder to get the image features and fed them into a linear classifier.
 - zero shot classification
 - contrastive learning
 - few shot learning
